@@ -98,30 +98,86 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Fancy = function (_React$Component) {
-  _inherits(Fancy, _React$Component);
+// Simple Masonry component for images
+// Expects props:
+//      images: array of image urls
+//      numCols: number of columns
+//      containerWidth: width of mansonry component
+var ImageMasonry = function (_React$Component) {
+  _inherits(ImageMasonry, _React$Component);
 
-  function Fancy() {
-    _classCallCheck(this, Fancy);
+  function ImageMasonry() {
+    _classCallCheck(this, ImageMasonry);
 
-    return _possibleConstructorReturn(this, (Fancy.__proto__ || Object.getPrototypeOf(Fancy)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (ImageMasonry.__proto__ || Object.getPrototypeOf(ImageMasonry)).apply(this, arguments));
   }
 
-  _createClass(Fancy, [{
-    key: 'render',
+  _createClass(ImageMasonry, [{
+    key: "render",
     value: function render() {
+      var columns = [];
+      for (var i = 0; i < this.props.numCols; i++) {
+        columns.push(_react2.default.createElement("div", {
+          style: {
+            width: 100 / this.props.numCols + "%",
+            display: "flex",
+            flexDirection: "column",
+            float: "left"
+          },
+          className: "col"
+        }));
+      }
+
       return _react2.default.createElement(
-        'div',
-        null,
-        'This is so Fancy!'
+        "div",
+        {
+          ref: "container",
+          style: {
+            width: this.props.containerWidth,
+            overflow: "hidden",
+            margin: "auto"
+          } },
+        columns
       );
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log(this.refs.container);
+      var containerEl = this.refs.container;
+      var cols = containerEl.querySelectorAll(".col");
+      var startTime = Date.now();
+      this.props.images.forEach(function (imageUrl, i) {
+        var img = new Image();
+        img.onload = function () {
+          var shortestColumn = cols[0];
+          cols.forEach(function (column) {
+            if (column.offsetHeight < shortestColumn.offsetHeight) {
+              shortestColumn = column;
+            }
+          });
+          shortestColumn.append(img);
+
+          // If the image loaded too quickly, add an animation delay
+          // var animationDelay = (Date.now() - startTime > 100*i) ? 0 : 100*i; 
+          setTimeout(function () {
+            img.style.opacity = 1;
+          }, 50);
+        };
+        img.src = imageUrl;
+        img.style.width = "100%";
+        img.style.border = "2px solid transparent";
+        img.style.boxSizing = "border-box";
+        img.style.transition = "opacity 1s";
+        img.style.opacity = 0;
+      });
     }
   }]);
 
-  return Fancy;
+  return ImageMasonry;
 }(_react2.default.Component);
 
-exports.default = Fancy;
+exports.default = ImageMasonry;
 
 /***/ })
 /******/ ]);

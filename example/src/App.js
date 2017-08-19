@@ -16,8 +16,12 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div className="App-header">
-          <h2>React Image Masonry</h2>
+        <div className="header">
+          <h1>React Image Masonry</h1>
+          <h2>Generate image masonry easily with this react component!</h2>
+        </div>
+        <div>
+
         </div>
         <ImageMasonry 
           images={images}

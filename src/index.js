@@ -36,7 +36,8 @@ class ImageMasonry extends React.Component {
   }
   
   componentDidMount() {
-    const containerEl = this.refs.container.getDOMNode();
+    console.log(this.refs.container)
+    const containerEl = this.refs.container;
     const cols = containerEl.querySelectorAll(".col");
     const startTime = Date.now();
     this.props.images.forEach((imageUrl, i) => {
