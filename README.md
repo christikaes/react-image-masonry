@@ -1,5 +1,7 @@
 [![NPM Version][npm-image]][https://www.npmjs.com/package/react-image-masonry]
 
+${badge('nodei')}
+
 # React Image Masonry
 
 Generate image masonry easily with this react component!
