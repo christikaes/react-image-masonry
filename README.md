@@ -30,7 +30,7 @@ To use simply import the component, and specify an array of imageUrls, number of
 ```
                     
 ## Demo
-https://christinakayastha.github.io/react-image-masonry/index.html
+https://christinakayastha.github.io/react-image-masonry/
 
 ## Contributing
 
