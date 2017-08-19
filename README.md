@@ -1,6 +1,4 @@
-[![NPM Version][npm-image]][https://www.npmjs.com/package/react-image-masonry]
-
-${badge('nodei')}
+[![NPM](https://nodei.co/npm/react-image-masonry.png)](https://npmjs.org/package/react-image-masonry)
 
 # React Image Masonry
 
