@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/react-image-masonry.png)](https://npmjs.org/package/react-image-masonry)
+
 # React Image Masonry
 
 Generate image masonry easily with this react component!
