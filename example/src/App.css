@@ -53,3 +53,15 @@ nav ul li:hover {
 nav ul li:hover a {
   color: #222;
 }
+
+.tile {
+  border: 5px solid transparent;
+  margin: 1px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease-in;
+}
+
+.tile:hover {
+  box-shadow: 0 0 3px 0 black;
+  cursor: pointer;
+}

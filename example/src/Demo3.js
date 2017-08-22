@@ -3,15 +3,14 @@ import ImageMasonry from 'react-image-masonry';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/styles';
 
-class Demo1 extends Component {
+class Demo3 extends Component {
     render() {
         // Get an array of images  
         let images = [];
         for(let i = 0; i< 1000; i++) {
             const ih = 100 + Math.floor(Math.random()*10)*15;
             const iw = 100 + Math.floor(Math.random()*10)*15;
-            const color = Math.floor(Math.random()*16777215).toString(16);
-            images.push("https://dummyimage.com/" + ih + "x" + iw + "/" + color + "/fff&text=" + (i+1));
+            images.push("https://unsplash.it/" + iw + "/" + ih + "/?random?sig=" + i);
         }
     
         return(
@@ -27,21 +26,30 @@ class Demo1 extends Component {
                     <h2>Code</h2>
                     <SyntaxHighlighter language='javascript' style={docco}>{`
 <ImageMasonry
-    imageUrls={images}
     numCols={10}
-/>
+>
+    {images.map((image, i) => {
+        <div key={i} className="tile" onClick={() => {alert(i + ' wooo!')}}>
+            <img src={image} alt={image} key={i} />
+        </div>
+    })}
+</ImageMasonry>
                     `}</SyntaxHighlighter>
 
                     <h3>Result</h3>
                 </div>
                 <ImageMasonry
-                    imageUrls={images}
                     numCols={20}
                 >
+                    {images.map((image, i) => (
+                        <div key={i} className="tile" onClick={() => {alert(i + ' wooo!')}}>
+                            <img src={image} alt={image} />
+                        </div>
+                    ))}
                 </ImageMasonry>
             </div>
         )
     }
 }
 
-export default Demo1;
+export default Demo3;

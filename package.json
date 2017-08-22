@@ -1,20 +1,16 @@
 {
   "name": "react-image-masonry",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Simple Image Masonry component for react",
   "repository": "https://github.com/christinakayastha/react-image-masonry.git",
   "main": "build/index.js",
   "peerDependencies": {
     "react": "^15.6.1"
   },
-  "dependencies": {
-    "react": "^15.6.1",
-    "webpack": "^2.6.1"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack --optimize-minimize"
   },
   "author": {
     "name": "Christina Kayastha"
@@ -25,6 +21,7 @@
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.5.1"
+    "babel-preset-env": "^1.5.1",
+    "webpack": "^2.6.1"
   }
 }

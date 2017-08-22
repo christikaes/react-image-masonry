@@ -16,21 +16,33 @@ You can download the package from npm with:
 
 `npm install react-image-masonry --save`
 
-## Usage
+## Usage Simple
 
-To use simply import the component, and specify an array of imageUrls, number of columns, and container width
+To use simply import the component, and specify an array of imageUrls and number of columns
 
 ```
 <ImageMasonry
-    images={[
+    imageUrls={[
         'https://media.giphy.com/media/8Ry7iAVwKBQpG/giphy.gif',
         'https://media.giphy.com/media/KI9oNS4JBemyI/giphy.gif',
         ...]}
     numCols={3}
-    containerWidth={"600px"}
 />
 ```
-                    
+
+## Usage Advanced
+
+You can also pass in an array of components, containerWidth, and animate like this:
+```
+<ImageMasonry
+    numCols={3}
+    containerWidth={"600px"}
+    animate={true}
+>
+    {images}
+<ImageMasonry>
+```
+
 ## Demo
 https://christinakayastha.github.io/react-image-masonry/
 

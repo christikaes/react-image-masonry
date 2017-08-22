@@ -6,17 +6,16 @@ class Demo2 extends Component {
         super(props);
         this.state = {
             numCols: 5,
-            width: "100%"
+            width: "50%"
         };
     }
 
     render() {
         // Get an array of images  
         let images = [];
-        for(let i = 0; i< 500; i++) {
+        for(let i = 0; i< 1000; i++) {
             const ih = 200 + Math.floor(Math.random()*10)*15;
             const iw = 200 + Math.floor(Math.random()*10)*15;
-            const color = Math.floor(Math.random()*16777215).toString(16);
             images.push("https://unsplash.it/" + iw + "/" + ih + "/?random?sig=" + i);
         }
     
@@ -40,7 +39,7 @@ class Demo2 extends Component {
                     <h3>Result</h3>
                 </div>
                 <ImageMasonry
-                    images={images}
+                    imageUrls={images}
                     numCols={this.state.numCols}
                     containerWidth={this.state.width}
                 >

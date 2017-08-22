@@ -26,7 +26,7 @@ class Intro extends Component {
                     <p>To use simply import the component, and specify an array of imageUrls, number of columns, and container width</p>
                     <SyntaxHighlighter language='javascript' style={docco}>{`
 <ImageMasonry
-    images={[
+    imageUrls={[
         'https://media.giphy.com/media/8Ry7iAVwKBQpG/giphy.gif',
         'https://media.giphy.com/media/KI9oNS4JBemyI/giphy.gif',
         ...]}
@@ -37,7 +37,7 @@ class Intro extends Component {
 
                     <h3>Result</h3>
                     <ImageMasonry
-                            images={[
+                            imageUrls={[
                                 'https://media.giphy.com/media/8Ry7iAVwKBQpG/giphy.gif',
                                 'https://media.giphy.com/media/KI9oNS4JBemyI/giphy.gif',
                                 'https://media.giphy.com/media/vfy6JExK7Ryhi/giphy.gif',
