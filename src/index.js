@@ -10,25 +10,14 @@ import React from 'react';
 class ImageMasonry extends React.Component {  
   constructor(props) {
     super(props);
-    
+
     let state = {}
     for(var i = 0; i < this.props.numCols; i++){
-        state["col-" + i] = [];
+      state["col-" + i] = [];
     }
     this.state = state;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.numCols){
-        let newState = {}
-        for(var i = 0; i < nextProps.numCols; i++){
-            newState["col-" + i] = [];
-        }
-        this.setState(newState);
-        this.addTiles();
-      }
-  }
-  
   render() {
     // Create all of the columns
     let columns = []
@@ -48,19 +37,24 @@ class ImageMasonry extends React.Component {
     }
     
     const styles = `
-      .react-image-masonry-col * { width: 100%}
+      .react-image-masonry-col * { width: 100%; box-sizing: border-box; }
       @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     `;
 
     // Set the container width ( default to 100% )
     const containerWidth = this.props.hasOwnProperty('containerWidth') ? this.props.containerWidth : '100%';
+    // Set the container height, if it is scrollable and no height was given, default to 500px
+    const containerHeight = this.props.hasOwnProperty('containerHeight') ? this.props.containerHeight : (this.props.scrollable ? '500px' : 'auto');
+    const overflowY = this.props.scrollable ? "scroll" : "hidden"
 
     return (
       <div 
         ref="container" 
         style={{
           width: containerWidth,
-          overflow: "hidden",
+          height: containerHeight,
+          overflowX: "hidden",
+          overflowY: overflowY,
           margin: "auto"
         }}>
         <style>{styles}</style>
@@ -70,102 +64,155 @@ class ImageMasonry extends React.Component {
   }
   
   componentDidMount() {
-    this.addTiles()
+    // Get tiles based on props
+    const tiles = this.getTiles(this.props);
+    // Add tiles to state
+    this.addTiles(tiles);
   }
-    // Expects react Element
-    // Returns an array of all the image urls
-    getAllImageUrls(reactEl) {
-        // If the element is an image, return the src
-        if(reactEl.type === "img") {
-            return [reactEl.props.src];
+  
+  componentWillReceiveProps(nextProps) {
+    try {
+      // If any of these props changed, recalculate the tiles
+      if(nextProps.numCols !== this.props.numCols 
+        || nextProps.imgUrls !== this.props.imgUrls
+        || nextProps.children.length !== this.props.children.length 
+        || !nextProps.children.every(child => {return nextProps.children[0].key === this.props.children[0].key })
+      ) {
+
+        // Reset the state
+        let newState = {}
+        for(var i = 0; i < nextProps.numCols; i++){
+            newState["col-" + i] = [];
         }
+        this.setState(newState);
 
-        // Otherwise, if the element has children, get the imgUrls from them
-        let children = reactEl.props.children;
-        if(children) {
-            let imageUrls = [];
-            React.Children.forEach(children, child => {
-                imageUrls = imageUrls.concat(this.getAllImageUrls(child))
-            })
-            return imageUrls;
-        }
-
-        // There were no images
-        return [];
-    }
-
-    // Expects an array of imageUrls
-    // Returns a promise that resolves when all of the images are loaded
-    loadImages(imageUrls) {
-        const imagesLoaded = [];
-        imageUrls.forEach(src => {
-            imagesLoaded.push(new Promise((resolve, reject) => {
-                let image = new Image();
-                image.onload = resolve;
-                image.onerror = reject;
-                image.src= src
-            }))
-        });
-        return Promise.all(imagesLoaded);
-    }
-
-    getShortestCol(containerEl) {
-        const cols = containerEl.querySelectorAll(".react-image-masonry-col");
-
-        // Get the shortestColumn
-        let shortestCol = 0;
-        cols.forEach((column, index) => {
-          if(column.offsetHeight < cols[shortestCol].offsetHeight) {
-            shortestCol = index
-          }
-        });
-        
-        return shortestCol;
-    }
-
-    addTiles() {
-      let tiles=[];
-      if(this.props.imageUrls) {
-        // If imgUrls is defined, generate img tags
-        tiles=this.props.imageUrls.map((imageUrl, index) => {
-          return <img  src={imageUrl} alt={imageUrl} key={"img-" + index + Date.now()} />
-        })
-      } else if(this.props.children) {
-        // Otherwise use the children components
-        tiles = this.props.children
-      } else {
-        // imgUrls or children must be passed in
-        console.warn("No images were passed into react-image-masonry")
+        // Get tiles based on props
+        const tiles = this.getTiles(nextProps);
+        // Add tiles to state
+        this.addTiles(tiles);
       }
-    
-      // For each tileComponent, get all of the images and load them
-      tiles.forEach((tile, index) => {
-          
-          // If animation is turned on add the style (on by default)
-          let animationOn = this.props.hasOwnProperty('animate') ? this.props.animate : true;
-          if(animationOn) {
-              tile = React.cloneElement(tile, {
-                style: Object.assign({}, tile.props.style, {
-                  animation: "fadeIn 1s ease-in"
-                })
-              });
-          }
-      
-          // Once all of the images have been loaded, then add the tile to the shortest column
-          const imageUrls = this.getAllImageUrls(tile)
-          this.loadImages(imageUrls).then(() => {
-              const containerEl = this.refs.container;
-              const shortestCol = this.getShortestCol(containerEl)
-
-              // Add the element to the column
-              this.setState({
-                  ["col-"+shortestCol] : this.state["col-"+shortestCol].concat([tile])
-              })
-          }).catch(error => {
-              console.log(error.message)
-          });
-      })
+    } catch (error) {
+      console.warn(error.message);
     }
+  }
+
+  // Gets tiles based on the props passed in
+  getTiles(props){
+    let tiles=[];
+    if(props.imageUrls) {
+      // If imgUrls is defined, generate img tags
+      tiles=props.imageUrls.map((imageUrl, index) => {
+        return <img  
+          src={imageUrl} 
+          alt={imageUrl} 
+          key={"img-" + index + Date.now()} 
+          style={{ 
+            border: "2px solid transparent", 
+            boxSizing: "border-box"
+          }} 
+        />
+      })
+    } else if(props.children) {
+      // Otherwise use the children components
+      tiles = props.children
+    } else {
+      // imgUrls or children must be passed in
+      console.warn("No images were passed into react-image-masonry")
+    }
+
+    return tiles;
+  }
+
+  // Expects react Element
+  // Returns an array of all the image urls
+  getAllImageUrls(reactEl) {
+    if(!reactEl) {
+      return [];
+    }
+
+    // If the element is an image, return the src
+    if(reactEl.type === "img") {
+      return [reactEl.props.src];
+    }
+
+    // Otherwise, if the element has children, get the imgUrls from them
+    let children = reactEl.props ? reactEl.props.children : false;
+    if(children) {
+      let imageUrls = [];
+      React.Children.forEach(children, child => {
+        imageUrls = imageUrls.concat(this.getAllImageUrls(child))
+      })
+      return imageUrls;
+    }
+
+    // There were no images
+    return [];
+  }
+
+  // Expects an array of imageUrls
+  // Returns a promise that resolves when all of the images are loaded
+  loadImages(imageUrls) {
+    const imagesLoaded = [];
+    imageUrls.forEach(src => {
+      imagesLoaded.push(new Promise((resolve, reject) => {
+        let image = new Image();
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src= src
+      }))
+    });
+    return Promise.all(imagesLoaded);
+  }
+
+  // Returns the index of the shortest column
+  getShortestCol(containerEl) {
+    const cols = containerEl.querySelectorAll(".react-image-masonry-col");
+
+    // Get the shortestColumn
+    let shortestCol = 0;
+    cols.forEach((column, index) => {
+      if(column.offsetHeight < cols[shortestCol].offsetHeight) {
+        shortestCol = index
+      }
+    });
+    
+    return shortestCol;
+  }
+
+  // Adds the given tiles to the state
+  addTiles(tiles) {    
+    // For each tileComponent, get all of the images and load them
+    tiles.forEach((tile, index) => {
+        
+      // If animation is turned on add the style (on by default)
+      let animate = this.props.hasOwnProperty('animate') ? this.props.animate : true;
+      if(animate) {
+        tile = React.cloneElement(tile, {
+          style: Object.assign({}, tile.props.style, {
+            animation: "fadeIn 1s ease-in"
+          })
+        });
+      }
+  
+      // Once all of the images have been loaded, then add the tile to the shortest column
+      const imageUrls = this.getAllImageUrls(tile)
+      this.loadImages(imageUrls).then(() => {
+        const containerEl = this.refs.container;
+        if(!containerEl) {
+          return;
+        }
+
+        const shortestCol = this.getShortestCol(containerEl)
+
+        // Add the element to the column
+        this.setState({
+            ["col-"+shortestCol] : this.state["col-"+shortestCol].concat([tile])
+        })
+      }).catch(error => {
+          console.log(error.message)
+      });
+    })
+  }
 }
 
 export default ImageMasonry;

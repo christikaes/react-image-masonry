@@ -32,12 +32,14 @@ To use simply import the component, and specify an array of imageUrls and number
 
 ## Usage Advanced
 
-You can also pass in an array of components, containerWidth, and animate like this:
+You can also pass in an array of components, containerWidth, containerHeight, scroll and animate like this:
 ```
 <ImageMasonry
     numCols={3}
     containerWidth={"600px"}
     animate={true}
+    scrollable={true}
+    containerHeight={"400px"}
 >
     {images}
 <ImageMasonry>

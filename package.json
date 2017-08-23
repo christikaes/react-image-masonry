@@ -1,6 +1,6 @@
 {
   "name": "react-image-masonry",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Simple Image Masonry component for react",
   "repository": "https://github.com/christinakayastha/react-image-masonry.git",
   "main": "build/index.js",
