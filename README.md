@@ -40,6 +40,8 @@ You can also pass in an array of components, containerWidth, containerHeight, sc
     animate={true}
     scrollable={true}
     containerHeight={"400px"}
+    className="my-class"
+    forceOrder={true}
 >
     {images}
 <ImageMasonry>

@@ -56,7 +56,8 @@ class ImageMasonry extends React.Component {
           overflowX: "hidden",
           overflowY: overflowY,
           margin: "auto"
-        }}>
+        }}
+        className={this.props.className}>
         <style>{styles}</style>
         {columns}
       </div>
@@ -190,6 +191,15 @@ class ImageMasonry extends React.Component {
         tile = React.cloneElement(tile, {
           style: Object.assign({}, tile.props.style, {
             animation: "fadeIn 1s ease-in"
+          })
+        });
+      }
+
+      // If forceOrder is turned on maintain the order of the tiles
+      if(this.props.forceOrder) {
+        tile = React.cloneElement(tile, {
+          style: Object.assign({}, tile.props.style, {
+            order: index
           })
         });
       }
