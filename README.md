@@ -2,7 +2,7 @@
 
 # React Image Masonry
 
-Generate image masonry easily with this react component!
+Generate image masonry easily with this react component! Detailed docs and demo here: https://christinakayastha.github.io/react-image-masonry/
 
 ## Getting Started
 
