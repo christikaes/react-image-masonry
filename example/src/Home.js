@@ -52,7 +52,7 @@ class Intro extends Component {
                         />
 
                 <h2>Contributing</h2>
-                    <p>Contribute on github</p>
+                    <p>Contributions welcome on github!! https://github.com/christinakayastha/react-image-masonry</p>
             </div>
         )
     }

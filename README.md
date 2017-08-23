@@ -50,4 +50,4 @@ https://christinakayastha.github.io/react-image-masonry/
 
 ## Contributing
 
-Contributions are welcome!!
+Contributions are welcome on github!! https://github.com/christinakayastha/react-image-masonry
