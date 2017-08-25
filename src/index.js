@@ -77,7 +77,7 @@ class ImageMasonry extends React.Component {
       if(nextProps.numCols !== this.props.numCols 
         || nextProps.imgUrls !== this.props.imgUrls
         || nextProps.children.length !== this.props.children.length 
-        || !nextProps.children.every(child => {return nextProps.children[0].key === this.props.children[0].key })
+        || !nextProps.children.every((child, i) => {return nextProps.children[i].key === this.props.children[i].key })
       ) {
 
         // Reset the state
