@@ -7,12 +7,12 @@ import React from 'react';
 //      [required] numCols: number of columns
 //      containerWidth: width of mansonry component, default 100%
 //      animate: whether or not to animate components fading in, default true
-class ImageMasonry extends React.Component {  
+class ImageMasonry extends React.Component {
   constructor(props) {
     super(props);
 
     let state = {}
-    for(var i = 0; i < this.props.numCols; i++){
+    for (var i = 0; i < this.props.numCols; i++) {
       state["col-" + i] = [];
     }
     this.state = state;
@@ -21,11 +21,11 @@ class ImageMasonry extends React.Component {
   render() {
     // Create all of the columns
     let columns = []
-    for(var i = 0; i < this.props.numCols; i++){
+    for (var i = 0; i < this.props.numCols; i++) {
       columns.push(
-        <div 
+        <div
           style={{
-            width: (100/this.props.numCols) + "%",
+            width: (100 / this.props.numCols) + "%",
             display: "flex",
             flexDirection: "column",
             float: "left"
@@ -35,7 +35,7 @@ class ImageMasonry extends React.Component {
         >{Object.values(this.state["col-" + i])}</div>
       )
     }
-    
+
     const styles = `
       .react-image-masonry-col * { width: 100%; box-sizing: border-box; }
       @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -48,8 +48,8 @@ class ImageMasonry extends React.Component {
     const overflowY = this.props.scrollable ? "scroll" : "hidden"
 
     return (
-      <div 
-        ref="container" 
+      <div
+        ref="container"
         style={{
           width: containerWidth,
           height: containerHeight,
@@ -63,27 +63,27 @@ class ImageMasonry extends React.Component {
       </div>
     )
   }
-  
+
   componentDidMount() {
     // Get tiles based on props
     const tiles = this.getTiles(this.props);
     // Add tiles to state
     this.addTiles(tiles);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     try {
       // If any of these props changed, recalculate the tiles
-      if(nextProps.numCols !== this.props.numCols 
+      if (nextProps.numCols !== this.props.numCols
         || nextProps.imgUrls !== this.props.imgUrls
-        || nextProps.children.length !== this.props.children.length 
-        || !nextProps.children.every((child, i) => {return nextProps.children[i].key === this.props.children[i].key })
+        || nextProps.children.length !== this.props.children.length
+        || !nextProps.children.every((child, i) => { return nextProps.children[i].key === this.props.children[i].key })
       ) {
 
         // Reset the state
         let newState = {}
-        for(var i = 0; i < nextProps.numCols; i++){
-            newState["col-" + i] = [];
+        for (var i = 0; i < nextProps.numCols; i++) {
+          newState["col-" + i] = [];
         }
         this.setState(newState);
 
@@ -98,22 +98,22 @@ class ImageMasonry extends React.Component {
   }
 
   // Gets tiles based on the props passed in
-  getTiles(props){
-    let tiles=[];
-    if(props.imageUrls) {
+  getTiles(props) {
+    let tiles = [];
+    if (props.imageUrls) {
       // If imgUrls is defined, generate img tags
-      tiles=props.imageUrls.map((imageUrl, index) => {
-        return <img  
-          src={imageUrl} 
-          alt={imageUrl} 
-          key={"img-" + index + Date.now()} 
-          style={{ 
-            border: "2px solid transparent", 
+      tiles = props.imageUrls.map((imageUrl, index) => {
+        return <img
+          src={imageUrl}
+          alt={imageUrl}
+          key={"img-" + index + Date.now()}
+          style={{
+            border: "2px solid transparent",
             boxSizing: "border-box"
-          }} 
+          }}
         />
       })
-    } else if(props.children) {
+    } else if (props.children) {
       // Otherwise use the children components
       tiles = props.children
     } else {
@@ -127,18 +127,18 @@ class ImageMasonry extends React.Component {
   // Expects react Element
   // Returns an array of all the image urls
   getAllImageUrls(reactEl) {
-    if(!reactEl) {
+    if (!reactEl) {
       return [];
     }
 
     // If the element is an image, return the src
-    if(reactEl.type === "img") {
+    if (reactEl.type === "img") {
       return [reactEl.props.src];
     }
 
     // Otherwise, if the element has children, get the imgUrls from them
     let children = reactEl.props ? reactEl.props.children : false;
-    if(children) {
+    if (children) {
       let imageUrls = [];
       React.Children.forEach(children, child => {
         imageUrls = imageUrls.concat(this.getAllImageUrls(child))
@@ -159,7 +159,7 @@ class ImageMasonry extends React.Component {
         let image = new Image();
         image.onload = resolve;
         image.onerror = reject;
-        image.src= src
+        image.src = src
       }))
     });
     return Promise.all(imagesLoaded);
@@ -172,43 +172,46 @@ class ImageMasonry extends React.Component {
     // Get the shortestColumn
     let shortestCol = 0;
     cols.forEach((column, index) => {
-      if(column.offsetHeight < cols[shortestCol].offsetHeight) {
+      if (column.offsetHeight < cols[shortestCol].offsetHeight) {
         shortestCol = index
       }
     });
-    
+
     return shortestCol;
   }
 
   // Adds the given tiles to the state
-  addTiles(tiles) {    
+  addTiles(tiles) {
     // For each tileComponent, get all of the images and load them
     tiles.forEach((tile, index) => {
-        
+      if (!tile) {
+        return;
+      }
+
+      let style = {};
+
       // If animation is turned on add the style (on by default)
       let animate = this.props.hasOwnProperty('animate') ? this.props.animate : true;
-      if(animate) {
-        tile = React.cloneElement(tile, {
-          style: Object.assign({}, tile.props.style, {
-            animation: "fadeIn 1s ease-in"
-          })
-        });
+      if (animate) {
+        style.animation = "fadeIn 1s ease-in"
       }
 
       // If forceOrder is turned on maintain the order of the tiles
-      if(this.props.forceOrder) {
-        tile = React.cloneElement(tile, {
-          style: Object.assign({}, tile.props.style, {
-            order: index
-          })
-        });
+      if (this.props.forceOrder) {
+        style.order = index;
       }
-  
+
+      // Copy over any styles that were set on the tile
+      if (tile && tile.props && tile.props.style) {
+        style = Object.assign({}, tile.props.style, style)
+      }
+      tile = React.cloneElement(tile, { style });
+
       // Once all of the images have been loaded, then add the tile to the shortest column
       const imageUrls = this.getAllImageUrls(tile)
       this.loadImages(imageUrls).then(() => {
         const containerEl = this.refs.container;
-        if(!containerEl) {
+        if (!containerEl) {
           return;
         }
 
@@ -216,10 +219,10 @@ class ImageMasonry extends React.Component {
 
         // Add the element to the column
         this.setState({
-            ["col-"+shortestCol] : this.state["col-"+shortestCol].concat([tile])
+          ["col-" + shortestCol]: this.state["col-" + shortestCol].concat([tile])
         })
       }).catch(error => {
-          console.log(error.message)
+        console.log(error.message)
       });
     })
   }
