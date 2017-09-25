@@ -16,6 +16,8 @@ class ImageMasonry extends React.Component {
       state["col-" + i] = [];
     }
     this.state = state;
+
+    this.cancel = function () { console.log("Cancelation not set yet") }
   }
 
   render() {
@@ -86,6 +88,9 @@ class ImageMasonry extends React.Component {
           newState["col-" + i] = [];
         }
         this.setState(newState);
+
+        // Cancel any images that were loading
+        this.cancel();
 
         // Get tiles based on props
         const tiles = this.getTiles(nextProps);
@@ -160,6 +165,9 @@ class ImageMasonry extends React.Component {
         image.onload = resolve;
         image.onerror = reject;
         image.src = src
+        this.cancel = function () {
+          image.src = ""
+        }
       }))
     });
     return Promise.all(imagesLoaded);
@@ -222,7 +230,7 @@ class ImageMasonry extends React.Component {
           ["col-" + shortestCol]: this.state["col-" + shortestCol].concat([tile])
         })
       }).catch(error => {
-        console.log(error.message)
+        console.error(error)
       });
     })
   }
