@@ -77,7 +77,7 @@ class ImageMasonry extends React.Component {
     try {
       // If any of these props changed, recalculate the tiles
       if (nextProps.numCols !== this.props.numCols
-        || nextProps.imgUrls !== this.props.imgUrls
+        || nextProps.imageUrls !== this.props.imageUrls
         || nextProps.children.length !== this.props.children.length
         || !nextProps.children.every((child, i) => { return nextProps.children[i].key === this.props.children[i].key })
       ) {
@@ -106,7 +106,7 @@ class ImageMasonry extends React.Component {
   getTiles(props) {
     let tiles = [];
     if (props.imageUrls) {
-      // If imgUrls is defined, generate img tags
+      // If imageUrls is defined, generate img tags
       tiles = props.imageUrls.map((imageUrl, index) => {
         return <img
           src={imageUrl}
@@ -122,7 +122,7 @@ class ImageMasonry extends React.Component {
       // Otherwise use the children components
       tiles = props.children
     } else {
-      // imgUrls or children must be passed in
+      // imageUrls or children must be passed in
       console.warn("No images were passed into react-image-masonry")
     }
 
@@ -141,7 +141,7 @@ class ImageMasonry extends React.Component {
       return [reactEl.props.src];
     }
 
-    // Otherwise, if the element has children, get the imgUrls from them
+    // Otherwise, if the element has children, get the imageUrls from them
     let children = reactEl.props ? reactEl.props.children : false;
     if (children) {
       let imageUrls = [];
