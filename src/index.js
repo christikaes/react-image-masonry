@@ -78,8 +78,8 @@ class ImageMasonry extends React.Component {
       // If any of these props changed, recalculate the tiles
       if (nextProps.numCols !== this.props.numCols
         || nextProps.imgUrls !== this.props.imgUrls
-        || nextProps.children.length !== this.props.children.length
-        || !nextProps.children.every((child, i) => { return nextProps.children[i].key === this.props.children[i].key })
+        || (nextProps.children || []).length !== (this.props.children || []).length
+        || !(nextProps.children || []).every((child, i) => { return nextProps.children[i].key === this.props.children[i].key })
       ) {
 
         // Reset the state
