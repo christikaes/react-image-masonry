@@ -77,7 +77,7 @@ class ImageMasonry extends React.Component {
     try {
       // If any of these props changed, recalculate the tiles
       if (nextProps.numCols !== this.props.numCols
-        || nextProps.imgUrls !== this.props.imgUrls
+        || !this.areArraysEqual(nextProps.imageUrls, this.props.imageUrls)
         || nextProps.children.length !== this.props.children.length
         || !nextProps.children.every((child, i) => { return nextProps.children[i].key === this.props.children[i].key })
       ) {
@@ -100,6 +100,11 @@ class ImageMasonry extends React.Component {
     } catch (error) {
       console.warn(error.message);
     }
+  }
+
+  areArraysEqual(array1, array2) {
+    // Note: This only works on scalar arrays
+    return array1.length === array2.length && array1.sort().every(function (value, index) { return value === array2.sort()[index] });
   }
 
   // Gets tiles based on the props passed in
