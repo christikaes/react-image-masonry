@@ -2,7 +2,7 @@
 
 # React Image Masonry
 
-Generate image masonry easily with this react component! Detailed docs and demo here: https://christinakayastha.github.io/react-image-masonry/
+Generate image masonry easily with this react component! Detailed docs and demo here: https://christikaes.github.io/react-image-masonry/
 
 ## Getting Started
 
@@ -48,8 +48,8 @@ You can also pass in an array of components, containerWidth, containerHeight, sc
 ```
 
 ## Demo
-https://christinakayastha.github.io/react-image-masonry/
+https://christikaes.github.io/react-image-masonry/
 
 ## Contributing
 
-Contributions are welcome on github!! https://github.com/christinakayastha/react-image-masonry
+Contributions are welcome on github!! https://github.com/christikaes/react-image-masonry
