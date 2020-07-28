@@ -29,6 +29,9 @@ class Demo1 extends Component {
 <ImageMasonry
     imageUrls={images}
     numCols={10}
+    onImageClick={(event, index) => {
+        alert(\`You clicked on image index \${index}!!\`);
+    }}
 />
                     `}</SyntaxHighlighter>
 
@@ -36,7 +39,10 @@ class Demo1 extends Component {
                 </div>
                 <ImageMasonry
                     imageUrls={images}
-                    numCols={20}
+                    numCols={10}
+                    onImageClick={(event, index) => {
+                        alert(`You clicked on image index ${index}!!`);
+                    }}
                 >
                 </ImageMasonry>
             </div>

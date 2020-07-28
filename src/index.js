@@ -7,6 +7,7 @@ import React from 'react';
 //      [required] numCols: number of columns
 //      containerWidth: width of mansonry component, default 100%
 //      animate: whether or not to animate components fading in, default true
+//      onImageClick: if using imageUrls, event when image is clicked
 class ImageMasonry extends React.Component {
   constructor(props) {
     super(props);
@@ -114,6 +115,11 @@ class ImageMasonry extends React.Component {
       // If imageUrls is defined, generate img tags
       tiles = props.imageUrls.map((imageUrl, index) => {
         return <img
+          onClick={(event) => {
+            if (this.props.onImageClick) {
+              this.props.onImageClick(event, index);
+            } 
+          }} 
           src={imageUrl}
           alt={imageUrl}
           key={"img-" + index + Date.now()}
